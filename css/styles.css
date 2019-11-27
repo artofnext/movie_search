@@ -20,12 +20,16 @@ main {
     width: 90%;
 }
 
-input, button {
+input, button, select {
     font-size: 1em;
     border: 1px solid rgb(45, 136, 255);
     border-radius: 20px;
     padding: 10px 15px;
     margin: 10px;
+}
+
+select {
+    color: rgb(45, 136, 255);
 }
 
 button {

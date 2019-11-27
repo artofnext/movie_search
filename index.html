@@ -19,10 +19,15 @@
         </h1>
     </header>
     <main>
-        <input class="search" name="search">
-        <input class="type" name="type">
-        <button class="search">Search!</button>
+        <input class="search" id="search" name="search">
+        <select class="type" id="type" name="type">
+            <option value="movie">Movie</option>
+            <option value="series">Series</option>
+            <option value="episode">Episode</option>
+        </select>
+        <button class="search" id="search_button">Search!</button>
     </main>
+    <div id="debug"></div>
     <script type="text/javascript" src="js/search.js"></script>
     <!-- <script type="text/javascript" src="js/jcarousel_config.js"></script> -->
 </div>
