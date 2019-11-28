@@ -35,40 +35,71 @@ xhr.onreadystatechange = function() {
 
       console.log(movieObj);
       // Test local storage functions
-
-      saveMovieObj(movieObj);
+        console.log("isMovieObjExist: " + isMovieObjExist());
+        saveMovieObj(movieObj);
         movieList.appendChild(renderHTML(movieObj));
     }
-    console.log("Bad responce!");
+    console.log("Bad response!");
 }
 
 function renderHTML(json) {
 
-    let objHTML = document.createElement("ul");
+    let movieListHTML = document.createElement("ul");
+    movieListHTML.classList.add("a-container");
+
+let i = 0; //TODO for loop starts here
+
+
+
     let listElement = document.createElement("li");
-    listElement.innerHTML = "Try!";
-    objHTML.appendChild(listElement);
+    listElement.classList.add("a-items");
+
+    let inputRadio = document.createElement("input");
+    let type = document.createAttribute("type");
+    type.value = "radio";
+    inputRadio.setAttributeNode(type);   
+    let name = document.createAttribute("name");
+    name.value = "ac";
+    inputRadio.setAttributeNode(name);   
+    let id = document.createAttribute("id");
+    id.value = `a${i+1}`;
+    inputRadio.setAttributeNode(id);
+    listElement.appendChild(inputRadio);
+    
+    let label = document.createElement("label");
+    let forAttr = document.createAttribute("for");
+    forAttr.value = `a${i+1}`;
+    label.setAttributeNode(forAttr);
+
+    label.innerText = json["Search"][i]["Title"];
+    listElement.appendChild(label);
+
+    
+
+
+    // listElement.innerHTML = "Try!";
+    movieListHTML.appendChild(listElement);
     // TODO implement
 
     
-    return objHTML;
+    return movieListHTML;
 }
 
 function saveMovieObj(json) {
-    //TODO implement
-    //Should save json object to Local Storage
+    
+    //Save json object to Local Storage
     window.localStorage.setItem('aont_movie_obj', JSON.stringify(json));
 }
 
 function retrieveMovieObj() {
-    //TODO implement
-    //Should return json object from Local Storage
+
+    //return json object from Local Storage
     return JSON.parse(window.localStorage.getItem("aont_movie_obj"));
 }
 
 function isMovieObjExist() {
-    //TODO implement
-    //Should return if movie list saved to local storage
+
+    //return if movie list saved to local storage
     return !!(window.localStorage.getItem("aont_movie_obj"));
 }
 
