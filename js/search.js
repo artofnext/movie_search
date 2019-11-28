@@ -11,30 +11,37 @@ let movieList = document.getElementById('movie_list');
 // searchButton.addEventListener('click', doRequest);
 let xhr = new XMLHttpRequest();
 
-searchForm.onsubmit = function(e) {
+//Initial 
 
-	e.preventDefault();
-    
+if (isMovieObjExist) {
+    let movieObj = retrieveMovieObj();
+    movieList.appendChild(renderHTML(movieObj));
+}
+
+searchForm.onsubmit = function (e) {
+
+    e.preventDefault();
+
     // Compose url
     let url = e.target.action; //domain from action of form
-    url += "?apikey=";          
+    url += "?apikey=";
     url += API_KEY;             //API key
     url += "&s=";
     url += searchField.value.trim();// title for search 
     url += "&type=";
     url += typeField.value.trim();  // type
 
-	xhr.open("GET", url);
-	xhr.send();
+    xhr.open("GET", url);
+    xhr.send();
 }
 
-xhr.onreadystatechange = function() {
-  
-    if (this.readyState == 4 && this.status == 200) {
-      movieObj = JSON.parse(this.responseText);
+xhr.onreadystatechange = function () {
 
-      console.log(movieObj);
-      // Test local storage functions
+    if (this.readyState == 4 && this.status == 200) {
+        movieObj = JSON.parse(this.responseText);
+
+        console.log(movieObj);
+        // Test local storage functions
         console.log("isMovieObjExist: " + isMovieObjExist());
         saveMovieObj(movieObj);
         movieList.appendChild(renderHTML(movieObj));
@@ -47,46 +54,43 @@ function renderHTML(json) {
     let movieListHTML = document.createElement("ul");
     movieListHTML.classList.add("a-container");
 
-let i = 0; //TODO for loop starts here
+    let i = 0; //TODO for loop starts here
 
+    for (let i = 0; i < json["Search"].length; i++) {
 
+        let listElement = document.createElement("li");
+        listElement.classList.add("a-items");
 
-    let listElement = document.createElement("li");
-    listElement.classList.add("a-items");
+        let inputRadio = document.createElement("input");
+        let type = document.createAttribute("type");
+        type.value = "radio";
+        inputRadio.setAttributeNode(type);
+        let name = document.createAttribute("name");
+        name.value = "ac";
+        inputRadio.setAttributeNode(name);
+        let id = document.createAttribute("id");
+        id.value = `a${i + 1}`;
+        inputRadio.setAttributeNode(id);
+        listElement.appendChild(inputRadio);
 
-    let inputRadio = document.createElement("input");
-    let type = document.createAttribute("type");
-    type.value = "radio";
-    inputRadio.setAttributeNode(type);   
-    let name = document.createAttribute("name");
-    name.value = "ac";
-    inputRadio.setAttributeNode(name);   
-    let id = document.createAttribute("id");
-    id.value = `a${i+1}`;
-    inputRadio.setAttributeNode(id);
-    listElement.appendChild(inputRadio);
-    
-    let label = document.createElement("label");
-    let forAttr = document.createAttribute("for");
-    forAttr.value = `a${i+1}`;
-    label.setAttributeNode(forAttr);
+        let label = document.createElement("label");
+        let forAttr = document.createAttribute("for");
+        forAttr.value = `a${i + 1}`;
+        label.setAttributeNode(forAttr);
 
-    label.innerText = json["Search"][i]["Title"];
-    listElement.appendChild(label);
+        label.innerText = json["Search"][i]["Title"];
+        listElement.appendChild(label);
 
-    
+        // listElement.innerHTML = "Try!";
+        movieListHTML.appendChild(listElement);
+        // TODO implement
+    }
 
-
-    // listElement.innerHTML = "Try!";
-    movieListHTML.appendChild(listElement);
-    // TODO implement
-
-    
     return movieListHTML;
 }
 
 function saveMovieObj(json) {
-    
+
     //Save json object to Local Storage
     window.localStorage.setItem('aont_movie_obj', JSON.stringify(json));
 }
