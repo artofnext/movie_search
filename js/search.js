@@ -13,14 +13,18 @@ let xhr = new XMLHttpRequest();
 searchForm.onsubmit = function(e) {
 
 	e.preventDefault();
-	
-	let f = e.target,
-        formData = new FormData(f);
-        
-    formData.append('apikey', API_KEY);
+    
+    // Compose url
+    let url = e.target.action; //domain from action of form
+    url += "?apikey=";          
+    url += API_KEY;             //API key
+    url += "&s=";
+    url += searchField.value.trim();// title for search 
+    url += "&type=";
+    url += typeField.value.trim();  // type
 
-	xhr.open("GET", f.action);
-	xhr.send(formData);
+	xhr.open("GET", url);
+	xhr.send();
 }
 
 xhr.onreadystatechange = function() {
