@@ -19,13 +19,15 @@
         </h1>
     </header>
     <main>
-        <input class="search" id="search" name="search">
+        <form name="movie_search" id="movie_search" action="http://www.omdbapi.com/">
+        <input class="search" id="search" name="search" placeholder="Start input name...">
         <select class="type" id="type" name="type">
             <option value="movie">Movie</option>
             <option value="series">Series</option>
             <option value="episode">Episode</option>
         </select>
-        <button class="search" id="search_button">Search!</button>
+        <button class="search" id="search_button" type="submit">Search!</button>
+    </form>
     </main>
     <div id="debug"></div>
     <script type="text/javascript" src="js/search.js"></script>
