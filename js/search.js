@@ -7,6 +7,7 @@ let searchField = document.getElementById('search');
 let typeField = document.getElementById('type');
 let searchButton = document.getElementById('search_button');
 let searchForm = document.getElementById('movie_search');
+let movieList = document.getElementById('movie_list');
 // searchButton.addEventListener('click', doRequest);
 let xhr = new XMLHttpRequest();
 
@@ -33,8 +34,21 @@ xhr.onreadystatechange = function() {
       movieObj = JSON.parse(this.responseText);
 
       console.log(movieObj);
+        movieList.appendChild(renderHTML(movieObj));
     }
     console.log("Bad responce!");
+}
+
+function renderHTML(json) {
+
+    let objHTML = document.createElement("ul");
+    let listElement = document.createElement("li");
+    listElement.innerHTML = "Try!";
+    objHTML.appendChild(listElement);
+    // TODO implement
+
+    
+    return objHTML;
 }
 
 function doRequest(event) {
