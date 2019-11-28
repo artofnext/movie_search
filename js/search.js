@@ -34,6 +34,9 @@ xhr.onreadystatechange = function() {
       movieObj = JSON.parse(this.responseText);
 
       console.log(movieObj);
+      // Test local storage functions
+
+      saveMovieObj(movieObj);
         movieList.appendChild(renderHTML(movieObj));
     }
     console.log("Bad responce!");
@@ -50,6 +53,28 @@ function renderHTML(json) {
     
     return objHTML;
 }
+
+function saveMovieObj(json) {
+    //TODO implement
+    //Should save json object to Local Storage
+    window.localStorage.setItem('aont_movie_obj', JSON.stringify(json));
+}
+
+function retrieveMovieObj() {
+    //TODO implement
+    //Should return json object from Local Storage
+    return JSON.parse(window.localStorage.getItem("aont_movie_obj"));
+}
+
+function isMovieObjExist() {
+    //TODO implement
+    //Should return if movie list saved to local storage
+    return !!(window.localStorage.getItem("aont_movie_obj"));
+}
+
+
+
+
 
 function doRequest(event) {
 
