@@ -2,6 +2,10 @@
 const API_URL = "http://www.omdbapi.com/?apikey=b336e268&t=trek";
 const API_URL_IMG = "http://img.omdbapi.com/?apikey=[yourkey]&";
 const API_KEY = "b336e268";
+const LOCAL_MOV_OBJ = "aont_movie_obj";
+const LOCAL_QUERY_OBJ = "aont_query";
+
+let page = 4;
 
 let searchField = document.getElementById('search');
 let typeField = document.getElementById('type');
@@ -13,8 +17,8 @@ let xhr = new XMLHttpRequest();
 
 //Initial 
 
-if (isMovieObjExist()) {
-    let movieObj = retrieveMovieObj();
+if (isMovieObjExist(LOCAL_MOV_OBJ)) {
+    let movieObj = retrieveMovieObj(LOCAL_MOV_OBJ);
     movieList.appendChild(renderHTML(movieObj));
 }
 
@@ -30,6 +34,10 @@ searchForm.onsubmit = function (e) {
     url += searchField.value.trim();// title for search 
     url += "&type=";
     url += typeField.value.trim();  // type
+    url += "&page=";
+    url += page;
+
+    saveMovieObj(LOCAL_QUERY_OBJ, url);
 
     xhr.open("GET", url);
     xhr.send();
@@ -43,7 +51,7 @@ xhr.onreadystatechange = function () {
         console.log(movieObj);
         // Test local storage functions
         console.log("isMovieObjExist: " + isMovieObjExist());
-        saveMovieObj(movieObj);
+        saveMovieObj(LOCAL_MOV_OBJ, movieObj);
         movieList.appendChild(renderHTML(movieObj));
     }
     console.log("Bad response!");
@@ -67,11 +75,33 @@ function renderHTML(json) {
     } else {
         searchResponse.innerText = "Oops! Something went wrong!";
         searchResponse.classList.add("alert");
+        movieListHTML.appendChild(searchResponse);
+        return movieListHTML;
     }
     movieListHTML.appendChild(searchResponse);
 
     // TODO rewrite as a separate function for rendering elements for each page of response
+    let listNodes = generateListHTML(json);
+    for (let item of listNodes) {
+        movieListHTML.appendChild(item);
+    }
+    
+    let nextButton = document.createElement("button");
+    nextButton.classList.add("button");
+    nextButton.classList.add("center");
+    nextButton.innerText = "Show more!";
+    movieListHTML.appendChild(nextButton);
 
+    return movieListHTML;
+}
+
+/**
+ * @returns array of HTML li nodes
+ * 
+ * @param {json object} json 
+ */
+function generateListHTML(json) {
+    let listNodes = [];
     for (let i = 0; i < json["Search"].length; i++) {
 
         let listElement = document.createElement("li");
@@ -97,30 +127,30 @@ function renderHTML(json) {
         label.innerText = json["Search"][i]["Title"];
         listElement.appendChild(label);
 
+        listNodes.push(listElement);
         // listElement.innerHTML = "Try!";
-        movieListHTML.appendChild(listElement);
-        // TODO implement
+        // movieListHTML.appendChild(listElement);
     }
 
-    return movieListHTML;
+    return listNodes;
 }
 
-function saveMovieObj(json) {
+function saveMovieObj(key, json) {
 
     //Save json object to Local Storage
-    window.localStorage.setItem('aont_movie_obj', JSON.stringify(json));
+    window.localStorage.setItem(key, JSON.stringify(json));
 }
 
-function retrieveMovieObj() {
+function retrieveMovieObj(key) {
 
     //return json object from Local Storage
-    return JSON.parse(window.localStorage.getItem("aont_movie_obj"));
+    return JSON.parse(window.localStorage.getItem(key));
 }
 
-function isMovieObjExist() {
+function isMovieObjExist(key) {
 
     //return if movie list saved to local storage
-    return !!(window.localStorage.getItem("aont_movie_obj"));
+    return !!(window.localStorage.getItem(key));
 }
 
 

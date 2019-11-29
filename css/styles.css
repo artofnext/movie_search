@@ -51,3 +51,8 @@ button:active {
 .alert {
     color: red;
 }
+
+.center {
+    /* margin: 0 auto; */
+    /*TODO center element*/
+}
