@@ -47,3 +47,7 @@ button:active {
     background-color: rgb(97, 166, 255);
 
 }
+
+.alert {
+    color: red;
+}

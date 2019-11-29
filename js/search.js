@@ -13,7 +13,7 @@ let xhr = new XMLHttpRequest();
 
 //Initial 
 
-if (isMovieObjExist) {
+if (isMovieObjExist()) {
     let movieObj = retrieveMovieObj();
     movieList.appendChild(renderHTML(movieObj));
 }
@@ -49,12 +49,28 @@ xhr.onreadystatechange = function () {
     console.log("Bad response!");
 }
 
+function getURL(baseURL) {
+    //TODO implement
+}
+
 function renderHTML(json) {
 
     let movieListHTML = document.createElement("ul");
     movieListHTML.classList.add("a-container");
 
-    let i = 0; //TODO for loop starts here
+    let searchResponse = document.createElement("h2");
+    searchResponse.classList.add("search_response");
+    searchResponse.id = "search_response";
+
+    if (json['Response'] == "True") {
+        searchResponse.innerText = "Your last search results:";
+    } else {
+        searchResponse.innerText = "Oops! Something went wrong!";
+        searchResponse.classList.add("alert");
+    }
+    movieListHTML.appendChild(searchResponse);
+
+    // TODO rewrite as a separate function for rendering elements for each page of response
 
     for (let i = 0; i < json["Search"].length; i++) {
 
