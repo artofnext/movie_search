@@ -99,7 +99,6 @@ function renderHTML(json) {
     }
     movieListHTML.appendChild(searchResponse);
 
-    // TODO rewrite as a separate function for rendering elements for each page of response
     let listNodes = generateListHTML(json);
     for (let item of listNodes) {
         movieListHTML.appendChild(item);
@@ -176,9 +175,9 @@ function generateListHTML(json) {
         let name = document.createAttribute("name");
         name.value = "ac";
         inputRadio.setAttributeNode(name);
-        // let id = document.createAttribute("id");
-        // id.value = `a${i + 1}`;
-        // inputRadio.setAttributeNode(id);
+        let id = document.createAttribute("id");
+        id.value = `a${i + 1}`;
+        inputRadio.setAttributeNode(id);
         listElement.appendChild(inputRadio);
 
         let label = document.createElement("label");
@@ -195,6 +194,30 @@ function generateListHTML(json) {
     }
 
     return listNodes;
+}
+
+/**
+ * @returns HTML node
+ * 
+ * @param {json object} json 
+ */
+function generateDetailsHTML(json) {
+    let resultNode = document.createElement('div');
+    // let titleH3 = document.createElement('h3');
+    let yearP = document.createElement('p');
+    let plotP = document.createElement('p');
+    let posterIMG = document.createElement('img');
+    resultNode.classList.add("details_container");
+    // titleH3.innerText = json['Title'];
+    yearP.innerText = 'Year: ' + json['Year'];
+    plotP.innerText = json['Plot'];
+    posterIMG.src = json['Poster'];
+    // resultNode.appendChild(titleH3);
+    resultNode.appendChild(yearP);
+    resultNode.appendChild(posterIMG);
+    resultNode.appendChild(plotP);
+
+    return resultNode;
 }
 
 function saveMovieObj(key, json) {
@@ -217,14 +240,14 @@ function isMovieObjExist(key) {
 
 
 function getMovieDetails(e) {
-    console.log( e.target.innerText);
+    // console.log( e.target.innerText);
     let url = API_URL; //domain from action of form
     url += "?apikey=";
     url += API_KEY;             //API key
     url += "&t=";
     url += e.target.innerText.trim();// title for search 
-    // url += "&type=";
-    // url += typeField.value.trim();  // type
+    url += "&type=";
+    url += typeField.value.trim();  // type
 
     fetch(url)
         .then(response => {
@@ -234,9 +257,12 @@ function getMovieDetails(e) {
         })
         .then(json => {
 
-            console.log(json);
+            // console.log(json);
+            if (json['Response'] == 'True') {
 
-            //TODO implement adding nodes to list element
+            // console.log(e.target.parentElement);
+            e.target.parentElement.appendChild(generateDetailsHTML(json));
+            }  
 
         })
         .catch(err => {
