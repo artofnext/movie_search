@@ -1,5 +1,5 @@
 
-const API_URL = "http://www.omdbapi.com/";
+const API_URL = "https://www.omdbapi.com/";
 // const API_URL_IMG = "http://img.omdbapi.com/?apikey=[yourkey]&";
 const API_KEY = "b336e268";
 const LOCAL_MOV_OBJ = "aont_movie_obj";
@@ -192,7 +192,7 @@ function generateDetailsHTML(json) {
     resultNode.classList.add("a-content");
     yearP.innerText = 'Year: ' + json['Year'];
     plotP.innerText = json['Plot'];
-    
+
     if (json['Poster'] == 'N/A') {
         posterIMG.src = '../img/no_img.png';
     } else {
