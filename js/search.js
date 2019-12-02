@@ -183,7 +183,6 @@ function generateListHTML(json) {
  */
 function generateDetailsHTML(json) {
     let resultNode = document.createElement('div');
-    // let titleH3 = document.createElement('h3');
     let yearP = document.createElement('p');
     yearP.classList.add('details_year');
     let plotP = document.createElement('p');
@@ -191,11 +190,15 @@ function generateDetailsHTML(json) {
     let posterIMG = document.createElement('img');
     resultNode.classList.add("details_container");
     resultNode.classList.add("a-content");
-    // titleH3.innerText = json['Title'];
     yearP.innerText = 'Year: ' + json['Year'];
     plotP.innerText = json['Plot'];
-    posterIMG.src = json['Poster'];
-    // resultNode.appendChild(titleH3);
+    
+    if (json['Poster'] == 'N/A') {
+        posterIMG.src = '../img/no_img.png';
+    } else {
+        posterIMG.src = json['Poster'];
+    }
+    // console.log(json['Poster']);
     resultNode.appendChild(plotP);
     resultNode.appendChild(posterIMG);
     resultNode.appendChild(yearP);
