@@ -21,14 +21,11 @@ let typeField = document.getElementById('type');
 let searchButton = document.getElementById('search_button');
 let searchForm = document.getElementById('movie_search');
 let movieList = document.getElementById('movie_list');
-// searchButton.addEventListener('click', doRequest);
 let xhr = new XMLHttpRequest();
 
 //Initial 
-
 if (isMovieObjExist(LOCAL_MOV_OBJ)) {
     let movieObj = retrieveMovieObj(LOCAL_MOV_OBJ);
-    //TODO remove rendered before
     movieList.appendChild(renderHTML(movieObj));
     addNextButton(movieList);
 }
@@ -36,8 +33,6 @@ if (isMovieObjExist(LOCAL_MOV_OBJ)) {
 if (isMovieObjExist(LOCAL_QUERY_OBJ)) {
     url = retrieveMovieObj(LOCAL_QUERY_OBJ);
 }
-
-
 
 searchForm.onsubmit = function (e) {
 
@@ -68,17 +63,11 @@ xhr.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
         movieObj = JSON.parse(this.responseText);
 
-        console.log(movieObj);
-
         saveMovieObj(LOCAL_MOV_OBJ, movieObj);
         movieList.appendChild(renderHTML(movieObj));
         addNextButton(movieList);
     }
     console.log("Bad response!");
-}
-
-function getURL(baseURL) {
-    //TODO implement
 }
 
 function renderHTML(json) {
@@ -92,7 +81,7 @@ function renderHTML(json) {
     searchResponse.id = "search_response";
 
     if (json['Response'] == "True") {
-        searchResponse.innerText = "Your last search results:";
+        searchResponse.innerText = "Your search results:";
     } else {
         searchResponse.innerText = json['Error'];
         searchResponse.classList.add("alert");
@@ -105,7 +94,6 @@ function renderHTML(json) {
     for (let item of listNodes) {
         movieListHTML.appendChild(item);
     }
-
 
     return movieListHTML;
 }
@@ -127,21 +115,14 @@ function showNextPage(e) {
 
     let index = url.lastIndexOf("&page=");
     let urlBase = url.slice(0, index);
-    // console.log("Index: " + index);
-    // console.log("Base Url: " + urlBase);
     url = urlBase + "&page=" + page;
     saveMovieObj(LOCAL_QUERY_OBJ, url);
-    // console.log("Url: " + url);
 
     fetch(url)
         .then(response => {
-            // console.log("RESPONSE:", response);
-
             return response.json();
         })
         .then(json => {
-
-            console.log(json);
 
             let listNodes = generateListHTML(json);
             for (let item of listNodes) {
@@ -149,7 +130,6 @@ function showNextPage(e) {
             }
 
             addNextButton(movieList);
-
         })
         .catch(err => {
             console.log("ERROR:", err.toString())
@@ -191,8 +171,6 @@ function generateListHTML(json) {
         listElement.appendChild(label);
 
         listNodes.push(listElement);
-        // listElement.innerHTML = "Try!";
-        // movieListHTML.appendChild(listElement);
     }
 
     return listNodes;
@@ -225,27 +203,27 @@ function generateDetailsHTML(json) {
     return resultNode;
 }
 
+//Save json object to Local Storage
 function saveMovieObj(key, json) {
 
-    //Save json object to Local Storage
     window.localStorage.setItem(key, JSON.stringify(json));
 }
 
+//return json object from Local Storage
 function retrieveMovieObj(key) {
 
-    //return json object from Local Storage
     return JSON.parse(window.localStorage.getItem(key));
 }
 
+//return if movie list saved to local storage
 function isMovieObjExist(key) {
 
-    //return if movie list saved to local storage
     return !!(window.localStorage.getItem(key));
 }
 
 
 function getMovieDetails(e) {
-    console.log("Clicked: " + e.target);
+    // console.log("Clicked: " + e.target);
     if (e.target.parentElement.childNodes.length > 2) {
         return;
     }
@@ -259,16 +237,11 @@ function getMovieDetails(e) {
 
     fetch(url)
         .then(response => {
-            // console.log("RESPONSE:", response);
-
             return response.json();
         })
         .then(json => {
 
-            // console.log(json);
             if (json['Response'] == 'True') {
-
-            // console.log(e.target.parentElement);
             e.target.parentElement.appendChild(generateDetailsHTML(json));
             }  
 
