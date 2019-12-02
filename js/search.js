@@ -1,6 +1,6 @@
 
 const API_URL = "http://www.omdbapi.com/";
-const API_URL_IMG = "http://img.omdbapi.com/?apikey=[yourkey]&";
+// const API_URL_IMG = "http://img.omdbapi.com/?apikey=[yourkey]&";
 const API_KEY = "b336e268";
 const LOCAL_MOV_OBJ = "aont_movie_obj";
 const LOCAL_QUERY_OBJ = "aont_query";
@@ -81,7 +81,7 @@ function renderHTML(json) {
     searchResponse.id = "search_response";
 
     if (json['Response'] == "True") {
-        searchResponse.innerText = "Your search results:";
+        searchResponse.innerText = "Search results:";
     } else {
         searchResponse.innerText = json['Error'];
         searchResponse.classList.add("alert");
