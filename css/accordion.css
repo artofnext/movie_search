@@ -24,7 +24,7 @@ input[type=radio] {
   font-size: 18px;
   font-weight: bold;
   padding: 10px 20px;
-  color: #aaa;
+  color: rgb(74, 153, 255);
   background-color: #eee;
   border-bottom: 1px solid #ddd;
   
@@ -39,7 +39,7 @@ input[type=radio] {
   content: "";
   width: 0;
   height: 0;
-  border-top: 8px solid #aaa;
+  border-top: 8px solid rgb(74, 153, 255);
   border-right: 6px solid transparent;
   border-bottom: 8px solid transparent;
   border-left: 6px solid transparent;
@@ -51,13 +51,13 @@ input[type=radio] {
 .a-container input:checked + label,
 .a-container label:hover {
   background-color: #ddd;
-  color: #222;
+  color: rgb(0, 110, 255);
 }
 
 .a-container input:checked + label:after {
   border-top: 8px solid transparent;
   border-right: 6px solid transparent;
-  border-bottom: 8px solid #222;
+  border-bottom: 8px solid rgb(0, 110, 255);
   border-left: 6px solid transparent;
   top: 6px;
 }

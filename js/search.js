@@ -54,7 +54,9 @@ searchForm.onsubmit = function (e) {
     url += "&page=";
     url += page;
 
-    document.getElementById("movie_list").removeChild(document.getElementById("result_list"));
+    if (!!document.getElementById("result_list")) {
+        document.getElementById("movie_list").removeChild(document.getElementById("result_list"));
+    }
     saveMovieObj(LOCAL_QUERY_OBJ, url);
 
     xhr.open("GET", url);
@@ -152,7 +154,6 @@ function showNextPage(e) {
         .catch(err => {
             console.log("ERROR:", err.toString())
         });
-
 }
 
 /**
@@ -164,10 +165,10 @@ function generateListHTML(json) {
     let listNodes = [];
     for (let i = 0; i < json["Search"].length; i++) {
 
+        let idPrefix = Math.round(Math.random()*1000);
         let listElement = document.createElement("li");
-        listElement.addEventListener('click', getMovieDetails);
         listElement.classList.add("a-items");
-
+        
         let inputRadio = document.createElement("input");
         let type = document.createAttribute("type");
         type.value = "radio";
@@ -176,13 +177,14 @@ function generateListHTML(json) {
         name.value = "ac";
         inputRadio.setAttributeNode(name);
         let id = document.createAttribute("id");
-        id.value = `a${i + 1}`;
+        id.value = `a${idPrefix}${i + 1}`;
         inputRadio.setAttributeNode(id);
         listElement.appendChild(inputRadio);
-
+        
         let label = document.createElement("label");
+        label.addEventListener('click', getMovieDetails);
         let forAttr = document.createAttribute("for");
-        forAttr.value = `a${i + 1}`;
+        forAttr.value = `a${idPrefix}${i + 1}`;
         label.setAttributeNode(forAttr);
 
         label.innerText = json["Search"][i]["Title"];
@@ -205,17 +207,20 @@ function generateDetailsHTML(json) {
     let resultNode = document.createElement('div');
     // let titleH3 = document.createElement('h3');
     let yearP = document.createElement('p');
+    yearP.classList.add('details_year');
     let plotP = document.createElement('p');
+    plotP.classList.add('details_plot');
     let posterIMG = document.createElement('img');
     resultNode.classList.add("details_container");
+    resultNode.classList.add("a-content");
     // titleH3.innerText = json['Title'];
     yearP.innerText = 'Year: ' + json['Year'];
     plotP.innerText = json['Plot'];
     posterIMG.src = json['Poster'];
     // resultNode.appendChild(titleH3);
-    resultNode.appendChild(yearP);
-    resultNode.appendChild(posterIMG);
     resultNode.appendChild(plotP);
+    resultNode.appendChild(posterIMG);
+    resultNode.appendChild(yearP);
 
     return resultNode;
 }
@@ -240,7 +245,10 @@ function isMovieObjExist(key) {
 
 
 function getMovieDetails(e) {
-    // console.log( e.target.innerText);
+    console.log("Clicked: " + e.target);
+    if (e.target.parentElement.childNodes.length > 2) {
+        return;
+    }
     let url = API_URL; //domain from action of form
     url += "?apikey=";
     url += API_KEY;             //API key
@@ -269,29 +277,4 @@ function getMovieDetails(e) {
             console.log("ERROR:", err.toString())
         });
 
-}
-
-
-function doRequest(event) {
-
-    let input = searchField.value.trim();
-    let type = typeField.value.trim();
-
-    console.log('Input: ' + input);
-    console.log('type: ' + type);
-
-    // fetch(API_URL)
-    //     .then(response => {
-    //         console.log("RESPONSE:", response);
-
-    //         return response.json();
-    //     })
-    //     .then(data => {
-    //         console.log(data);
-    //         document.getElementById('debug').innerHTML = "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
-    //         // document.write("<pre>" + JSON.stringify(data, null, 2) + "</pre>");
-    //     })
-    //     .catch(err => {
-    //         console.log("ERROR:", err.toString())
-    //     });
 }

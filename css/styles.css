@@ -53,6 +53,31 @@ button:active {
 }
 
 .center {
-    /* margin: 0 auto; */
-    /*TODO center element*/
+
+}
+
+.details_container {
+    position: relative;
+}
+
+.details_container img {
+    width: 20%;
+    display: inline-block;
+    padding: 5px;
+    /* border-radius: 5px; */
+}
+
+.details_container p {
+
+}
+
+.details_year {
+
+}
+
+.details_plot {
+    position: absolute;
+    margin-left: 20%;
+    padding: 20px;
+    /* display: inline-block; */
 }
