@@ -194,7 +194,7 @@ function generateDetailsHTML(json) {
     plotP.innerText = json['Plot'];
 
     if (json['Poster'] == 'N/A') {
-        posterIMG.src = '../img/no_img.png';
+        posterIMG.src = 'img/no_img.png';
     } else {
         posterIMG.src = json['Poster'];
     }
